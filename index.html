@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Daylight Conversion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c2461 0%, #1e3799 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+            gap: 30px;
+        }
+
+        .animation-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .controls-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .animation-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(to bottom, #87CEEB 40%, #1a237e 100%);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .sky {
+            position: absolute;
+            width: 100%;
+            height: 70%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        .sun-moon {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 2s ease-in-out;
+        }
+
+        .sun {
+            background: radial-gradient(circle at 30% 30%, #FFD700, #FF8C00);
+            box-shadow: 0 0 60px #FFD700, 0 0 100px #FF8C00;
+        }
+
+        .moon {
+            background: radial-gradient(circle at 30% 30%, #F5F5F5, #A9A9A9);
+            box-shadow: 0 0 40px #F5F5F5, 0 0 80px #A9A9A9;
+        }
+
+        .ground {
+            position: absolute;
+            width: 100%;
+            height: 30%;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to top, #2d5016 0%, #5a9216 100%);
+        }
+
+        .cityscape {
+            position: absolute;
+            width: 100%;
+            height: 40%;
+            bottom: 30%;
+            left: 0;
+            background-image: 
+                linear-gradient(to top, transparent 10%, rgba(0,0,0,0.2) 100%),
+                linear-gradient(to right, #333 1px, transparent 1px),
+                linear-gradient(to bottom, #333 1px, transparent 1px);
+            background-size: 100% 100%, 20px 100%, 100% 20px;
+            opacity: 0.7;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 2s;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-group h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-group h3 i {
+            color: #3498db;
+        }
+
+        .time-input {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .time-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .time-display {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 120px;
+            text-align: center;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .time-label {
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 100px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #2c3e50;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .timezone-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        select {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            background-color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #2c3e50;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #3498db;
+        }
+
+        .conversion-result {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .conversion-result h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .conversion-result p {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .daylight-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .info-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .primary-btn {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+        }
+
+        .secondary-btn {
+            background: linear-gradient(to right, #ecf0f1, #bdc3c7);
+            color: #2c3e50;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            background-color: #f8f9fa;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .animation-container {
+                height: 300px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-sun"></i> Daylight Conversion Animation</h1>
+            <p>Visualize and convert daylight times across different time zones with this professional animation tool. Adjust the time slider to see real-time changes in the day/night cycle.</p>
+        </header>
+
+        <div class="main-content">
+            <section class="animation-section">
+                <h2><i class="fas fa-globe-americas"></i> Daylight Visualization</h2>
+                <div class="animation-container">
+                    <div class="sky">
+                        <div class="sun-moon sun" id="sun-moon"></div>
+                        <div class="stars" id="stars"></div>
+                    </div>
+                    <div class="cityscape"></div>
+                    <div class="ground"></div>
+                </div>
+                <div class="daylight-info">
+                    <div class="info-item">
+                        <div class="info-value" id="sunrise-time">06:30 AM</div>
+                        <div class="info-label">Sunrise</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value" id="daylight-duration">14h 30m</div>
+                        <div class="info-label">Daylight Duration</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value" id="sunset-time">08:00 PM</div>
+                        <div class="info-label">Sunset</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="controls-section">
+                <h2><i class="fas fa-sliders-h"></i> Time Controls</h2>
+                
+                <div class="control-group">
+                    <h3><i class="far fa-clock"></i> Current Time</h3>
+                    <div class="time-input">
+                        <div class="time-row">
+                            <div class="time-label">Local Time:</div>
+                            <div class="time-display" id="local-time">12:00 PM</div>
+                        </div>
+                        <div class="time-row">
+                            <div class="time-label">24h Slider:</div>
+                            <input type="range" id="time-slider" min="0" max="1439" value="720" step="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3><i class="fas fa-map-marker-alt"></i> Time Zone Conversion</h3>
+                    <div class="timezone-selector">
+                        <div class="time-row">
+                            <div class="time-label">From:</div>
+                            <select id="timezone-from">
+                                <option value="local">Local Time</option>
+                                <option value="utc">UTC (Coordinated Universal Time)</option>
+                                <option value="est">EST (Eastern Standard Time)</option>
+                                <option value="cst">CST (Central Standard Time)</option>
+                                <option value="pst">PST (Pacific Standard Time)</option>
+                                <option value="gmt">GMT (Greenwich Mean Time)</option>
+                                <option value="cet">CET (Central European Time)</option>
+                                <option value="aest">AEST (Australian Eastern Time)</option>
+                            </select>
+                        </div>
+                        <div class="time-row">
+                            <div class="time-label">To:</div>
+                            <select id="timezone-to">
+                                <option value="utc">UTC (Coordinated Universal Time)</option>
+                                <option value="est">EST (Eastern Standard Time)</option>
+                                <option value="cst">CST (Central Standard Time)</option>
+                                <option value="pst">PST (Pacific Standard Time)</option>
+                                <option value="gmt">GMT (Greenwich Mean Time)</option>
+                                <option value="cet">CET (Central European Time)</option>
+                                <option value="aest">AEST (Australian Eastern Time)</option>
+                                <option value="local" selected>Local Time</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="conversion-result">
+                    <h4>Converted Time</h4>
+                    <p id="converted-time">08:00 PM UTC</p>
+                </div>
+
+                <div class="buttons">
+                    <button class="primary-btn" id="animate-btn">
+                        <i class="fas fa-play"></i> Animate Day/Night Cycle
+                    </button>
+                    <button class="secondary-btn" id="reset-btn">
+                        <i class="fas fa-redo"></i> Reset to Current Time
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>Daylight Conversion Animation &copy; 2023 | Professional Time Visualization Tool</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM elements
+        const timeSlider = document.getElementById('time-slider');
+        const localTimeDisplay = document.getElementById('local-time');
+        const sunMoon = document.getElementById('sun-moon');
+        const stars = document.getElementById('stars');
+        const sunriseTime = document.getElementById('sunrise-time');
+        const sunsetTime = document.getElementById('sunset-time');
+        const daylightDuration = document.getElementById('daylight-duration');
+        const convertedTimeDisplay = document.getElementById('converted-time');
+        const animateBtn = document.getElementById('animate-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const timezoneFrom = document.getElementById('timezone-from');
+        const timezoneTo = document.getElementById('timezone-to');
+
+        // Timezone offset mapping (in hours)
+        const timezoneOffsets = {
+            'local': 0,
+            'utc': 0,
+            'est': -5,
+            'cst': -6,
+            'pst': -8,
+            'gmt': 0,
+            'cet': 1,
+            'aest': 10
+        };
+
+        // Timezone display names
+        const timezoneNames = {
+            'local': 'Local Time',
+            'utc': 'UTC',
+            'est': 'EST',
+            'cst': 'CST',
+            'pst': 'PST',
+            'gmt': 'GMT',
+            'cet': 'CET',
+            'aest': 'AEST'
+        };
+
+        // Animation state
+        let isAnimating = false;
+        let animationInterval;
+
+        // Initialize stars in the sky
+        function initStars() {
+            stars.innerHTML = '';
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 70 + '%';
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                stars.appendChild(star);
+            }
+        }
+
+        // Convert minutes to time string
+        function minutesToTime(minutes) {
+            const hour = Math.floor(minutes / 60) % 24;
+            const minute = minutes % 60;
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+            
+            return `${displayHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${ampm}`;
+        }
+
+        // Convert minutes to 24h time string
+        function minutesTo24hTime(minutes) {
+            const hour = Math.floor(minutes / 60) % 24;
+            const minute = minutes % 60;
+            
+            return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        }
+
+        // Update the animation based on time
+        function updateAnimation(minutes) {
+            // Calculate sun/moon position (6am to 6pm = sun, 6pm to 6am = moon)
+            const hour = minutes / 60;
+            const isDaytime = hour >= 6 && hour < 18;
+            
+            // Position sun/moon in the sky
+            // 0° at 6am (left), 90° at 12pm (top), 180° at 6pm (right)
+            let angle;
+            let xPos, yPos;
+            
+            if (hour >= 6 && hour <= 18) {
+                // Daytime: sun moves across the sky
+                angle = ((hour - 6) / 12) * Math.PI;
+                xPos = 50 + 40 * Math.sin(angle);
+                yPos = 20 + 30 * (1 - Math.cos(angle));
+                
+                // Update sun/moon appearance
+                sunMoon.className = 'sun-moon sun';
+                stars.style.opacity = 0;
+            } else {
+                // Nighttime: moon moves across the sky
+                let normalizedHour = hour < 6 ? hour + 24 : hour;
+                angle = ((normalizedHour - 18) / 12) * Math.PI;
+                xPos = 50 + 40 * Math.sin(angle);
+                yPos = 20 + 30 * (1 - Math.cos(angle));
+                
+                // Update sun/moon appearance
+                sunMoon.className = 'sun-moon moon';
+                stars.style.opacity = 1;
+            }
+            
+            // Apply position
+            sunMoon.style.left = `${xPos}%`;
+            sunMoon.style.top = `${yPos}px`;
+            
+            // Update sky gradient based on time of day
+            const animationContainer = document.querySelector('.animation-container');
+            let skyGradient;
+            
+            if (hour >= 5 && hour < 7) {
+                // Dawn
+                skyGradient = 'linear-gradient(to bottom, #FF7E5F 0%, #FFB88C 30%, #87CEEB 70%, #1a237e 100%)';
+            } else if (hour >= 7 && hour < 17) {
+                // Day
+                skyGradient = 'linear-gradient(to bottom, #87CEEB 0%, #87CEEB 40%, #1a237e 100%)';
+            } else if (hour >= 17 && hour < 19) {
+                // Dusk
+                skyGradient = 'linear-gradient(to bottom, #FF7E5F 0%, #FFB88C 30%, #4A00E0 70%, #1a237e 100%)';
+            } else {
+                // Night
+                skyGradient = 'linear-gradient(to bottom, #0F0C29 0%, #302B63 30%, #24243E 70%, #1a237e 100%)';
+            }
+            
+            animationContainer.style.background = skyGradient;
+            
+            // Update sunrise/sunset info
+            const sunrise = 6 * 60 + 30; // 6:30 AM in minutes
+            const sunset = 20 * 60; // 8:00 PM in minutes
+            
+            sunriseTime.textContent = minutesToTime(sunrise);
+            sunsetTime.textContent = minutesToTime(sunset);
+            
+            // Calculate daylight duration
+            const daylightMinutes = sunset - sunrise;
+            const daylightHours = Math.floor(daylightMinutes / 60);
+            const daylightMins = daylightMinutes % 60;
+            daylightDuration.textContent = `${daylightHours}h ${daylightMins}m`;
+        }
+
+        // Update time display and animation
+        function updateTime() {
+            const minutes = parseInt(timeSlider.value);
+            const timeString = minutesToTime(minutes);
+            localTimeDisplay.textContent = timeString;
+            
+            updateAnimation(minutes);
+            updateConvertedTime(minutes);
+        }
+
+        // Update converted time display
+        function updateConvertedTime(minutes) {
+            const fromZone = timezoneFrom.value;
+            const toZone = timezoneTo.value;
+            
+            // Calculate time difference
+            const fromOffset = timezoneOffsets[fromZone];
+            const toOffset = timezoneOffsets[toZone];
+            const offsetDifference = toOffset - fromOffset;
+            
+            // Convert minutes to hours and apply offset
+            let convertedMinutes = minutes + (offsetDifference * 60);
+            
+            // Ensure it's within 0-1439 range (24 hours)
+            if (convertedMinutes < 0) {
+                convertedMinutes += 24 * 60;
+            } else if (convertedMinutes >= 24 * 60) {
+                convertedMinutes -= 24 * 60;
+            }
+            
+            // Display converted time
+            const convertedTimeString = minutesToTime(convertedMinutes);
+            const fromName = timezoneNames[fromZone];
+            const toName = timezoneNames[toZone];
+            
+            convertedTimeDisplay.textContent = `${convertedTimeString} ${toName}`;
+        }
+
+        // Start/stop day/night cycle animation
+        function toggleAnimation() {
+            if (isAnimating) {
+                // Stop animation
+                clearInterval(animationInterval);
+                animateBtn.innerHTML = '<i class="fas fa-play"></i> Animate Day/Night Cycle';
+                isAnimating = false;
+            } else {
+                // Start animation
+                animateBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Animation';
+                isAnimating = true;
+                
+                let currentMinutes = parseInt(timeSlider.value);
+                
+                animationInterval = setInterval(() => {
+                    currentMinutes = (currentMinutes + 10) % (24 * 60);
+                    timeSlider.value = currentMinutes;
+                    updateTime();
+                }, 200);
+            }
+        }
+
+        // Reset to current time
+        function resetToCurrentTime() {
+            // Stop any ongoing animation
+            if (isAnimating) {
+                toggleAnimation();
+            }
+            
+            // Get current time in minutes
+            const now = new Date();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+            
+            // Update slider and display
+            timeSlider.value = currentMinutes;
+            updateTime();
+        }
+
+        // Initialize the app
+        function initApp() {
+            // Create stars
+            initStars();
+            
+            // Set initial time to current time
+            resetToCurrentTime();
+            
+            // Add event listeners
+            timeSlider.addEventListener('input', updateTime);
+            timezoneFrom.addEventListener('change', () => updateConvertedTime(parseInt(timeSlider.value)));
+            timezoneTo.addEventListener('change', () => updateConvertedTime(parseInt(timeSlider.value)));
+            animateBtn.addEventListener('click', toggleAnimation);
+            resetBtn.addEventListener('click', resetToCurrentTime);
+            
+            // Initial time conversion
+            updateConvertedTime(parseInt(timeSlider.value));
+        }
+
+        // Start the app when page loads
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
