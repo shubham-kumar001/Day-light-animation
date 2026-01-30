@@ -3,208 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro-Level Daylight Conversion Animation</title>
+    <title>Daylight Simulation Pro | Professional Visualization</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2d74da;
+            --accent: #00c9ff;
+            --dark: #0a192f;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
         }
 
         body {
-            background-color: #121212;
-            color: #f0f0f0;
+            background: linear-gradient(135deg, #0a192f 0%, #1a365d 100%);
+            color: #e2e8f0;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             overflow-x: hidden;
-            padding: 20px;
         }
 
         .container {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-        }
-
-        header {
-            text-align: center;
-            padding: 20px;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #FFD700, #FF8C00, #1E90FF, #4B0082);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            max-width: 700px;
+            max-width: 1600px;
             margin: 0 auto;
-            line-height: 1.6;
+            padding: 20px;
         }
 
-        .animation-container {
-            width: 100%;
-            height: 500px;
-            position: relative;
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent), var(--light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .date-display {
+            background: var(--glass);
+            border-radius: 10px;
+            padding: 12px 20px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        /* Visualization Panel */
+        .vis-panel {
+            background: var(--glass);
             border-radius: 20px;
+            padding: 25px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
 
-        /* Sky and background elements */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title i {
+            color: var(--accent);
+        }
+
+        .coordinates {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Sky Visualization */
+        .sky-container {
+            height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.3);
+        }
+
         .sky {
             position: absolute;
             width: 100%;
             height: 100%;
-            transition: background 3s ease;
-        }
-
-        .sun {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, #FFD700, #FF8C00);
-            border-radius: 50%;
-            box-shadow: 0 0 60px 20px rgba(255, 215, 0, 0.7);
-            top: 70%;
-            left: 10%;
-            transform-origin: center;
-            transition: all 3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10;
-        }
-
-        .moon {
-            position: absolute;
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, #F5F5F5, #D3D3D3);
-            border-radius: 50%;
-            box-shadow: 0 0 40px 15px rgba(211, 211, 211, 0.5);
-            top: 70%;
-            left: 90%;
-            transform-origin: center;
-            transition: all 3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10;
-            opacity: 0;
-        }
-
-        .moon::before {
-            content: '';
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            top: 20px;
-            left: 15px;
-            box-shadow: 
-                25px 10px 0 -3px rgba(0, 0, 0, 0.1),
-                40px 30px 0 -5px rgba(0, 0, 0, 0.1),
-                20px 40px 0 -2px rgba(0, 0, 0, 0.1);
+            transition: background 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .horizon {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 200px;
-            background: linear-gradient(to top, #2E8B57, #3CB371);
+            height: 180px;
+            background: linear-gradient(to top, rgba(30, 60, 30, 0.9), rgba(60, 120, 60, 0.7));
             z-index: 5;
         }
 
-        .cloud {
+        /* Celestial Bodies */
+        .sun {
             position: absolute;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            opacity: 0.7;
-            transition: opacity 3s ease;
-        }
-
-        .cloud-1 {
-            width: 120px;
-            height: 50px;
-            top: 100px;
-            left: 150px;
-        }
-
-        .cloud-2 {
-            width: 150px;
-            height: 60px;
-            top: 180px;
-            left: 400px;
-        }
-
-        .cloud-3 {
             width: 100px;
-            height: 40px;
-            top: 80px;
-            right: 200px;
-        }
-
-        .cloud::before, .cloud::after {
-            content: '';
-            position: absolute;
-            background: rgba(255, 255, 255, 0.9);
+            height: 100px;
+            background: radial-gradient(circle, #ffd700 0%, #ff8c00 70%, #ff4500 100%);
             border-radius: 50%;
+            box-shadow: 0 0 80px 30px rgba(255, 215, 0, 0.6);
+            top: 70%;
+            left: 10%;
+            transform-origin: center;
+            transition: all 3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 10;
+            filter: blur(0.5px);
         }
 
-        .cloud-1::before {
-            width: 70px;
-            height: 70px;
-            top: -30px;
-            left: 20px;
+        .sun-glow {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9;
         }
 
-        .cloud-1::after {
-            width: 60px;
-            height: 60px;
-            top: -20px;
-            right: 20px;
-        }
-
-        .cloud-2::before {
+        .moon {
+            position: absolute;
             width: 80px;
             height: 80px;
-            top: -40px;
-            left: 25px;
+            background: radial-gradient(circle, #f8fafc 0%, #cbd5e1 70%, #94a3b8 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 40px 10px rgba(255, 255, 255, 0.3);
+            top: 70%;
+            left: 90%;
+            transform-origin: center;
+            transition: all 3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 10;
+            opacity: 0;
         }
 
-        .cloud-2::after {
-            width: 70px;
-            height: 70px;
-            top: -30px;
-            right: 30px;
+        .moon-craters {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(0,0,0,0.1) 2%, transparent 3%),
+                        radial-gradient(circle at 70% 20%, rgba(0,0,0,0.1) 3%, transparent 4%),
+                        radial-gradient(circle at 40% 60%, rgba(0,0,0,0.1) 2%, transparent 3%),
+                        radial-gradient(circle at 60% 70%, rgba(0,0,0,0.1) 2%, transparent 3%);
         }
 
-        .cloud-3::before {
-            width: 50px;
-            height: 50px;
-            top: -25px;
-            left: 15px;
+        /* Atmospheric Effects */
+        .atmosphere {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 8;
         }
 
-        .cloud-3::after {
-            width: 40px;
-            height: 40px;
-            top: -15px;
-            right: 20px;
+        .sun-rays {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 70%, rgba(255, 255, 200, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 2s ease;
         }
 
         .stars {
@@ -219,63 +253,50 @@
             position: absolute;
             background-color: white;
             border-radius: 50%;
+            animation: twinkle 4s infinite alternate;
         }
 
-        /* Time display */
-        .time-display {
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Cloud System */
+        .clouds {
             position: absolute;
-            top: 30px;
-            right: 30px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 15px 25px;
-            border-radius: 12px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            z-index: 20;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .time-period {
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-top: 5px;
-            text-align: center;
-        }
-
-        /* Controls */
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
             width: 100%;
-            max-width: 900px;
+            height: 200px;
+            top: 100px;
+            z-index: 7;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50px;
+            opacity: 0.8;
+            transition: all 3s ease;
+            filter: blur(1px);
+        }
+
+        /* Time Controls */
+        .time-controls {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            align-items: center;
         }
 
         .time-slider-container {
-            flex: 1;
-            min-width: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .time-slider-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-weight: 600;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
         }
 
         .time-slider {
             width: 100%;
-            height: 12px;
+            height: 8px;
             -webkit-appearance: none;
-            appearance: none;
             background: linear-gradient(to right, #1a237e, #00b0ff, #ffeb3b, #ff9800, #1a237e);
             border-radius: 10px;
             outline: none;
@@ -283,519 +304,991 @@
 
         .time-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: white;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            border: 2px solid #333;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            border: 3px solid var(--accent);
         }
 
-        .preset-buttons {
+        .time-slider-labels {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
 
-        .time-btn {
-            padding: 14px 22px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: none;
+        .time-presets {
+            display: flex;
+            gap: 10px;
+        }
+
+        .preset-btn {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
+            color: white;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .time-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
-
-        .time-btn.active {
-            background: rgba(100, 150, 255, 0.3);
-            box-shadow: 0 0 15px rgba(100, 150, 255, 0.5);
-        }
-
-        .animate-btn {
-            padding: 16px 32px;
-            background: linear-gradient(90deg, #FF8C00, #FFD700);
-            color: #121212;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
         }
 
-        .animate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255, 140, 0, 0.3);
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
 
-        .animate-btn:active {
-            transform: translateY(0);
+        .preset-btn.active {
+            background: rgba(0, 201, 255, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 201, 255, 0.3);
         }
 
-        .day-info {
+        /* Data Panel */
+        .data-panel {
             display: flex;
-            justify-content: space-around;
-            width: 100%;
-            max-width: 900px;
-            margin-top: 10px;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 20px;
         }
 
-        .info-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 12px;
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .data-card {
+            background: var(--glass);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
         }
 
-        .info-card h3 {
-            margin-bottom: 10px;
-            color: #FFD700;
+        .data-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .data-card-title {
             font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .info-card p {
-            font-size: 1.5rem;
+        .data-card-title i {
+            color: var(--accent);
+        }
+
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .metric {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
             font-weight: 700;
+            color: var(--light);
         }
 
-        .instructions {
-            max-width: 900px;
-            margin-top: 20px;
-            text-align: center;
-            line-height: 1.6;
+        .metric-unit {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-left: 5px;
+        }
+
+        /* Time Series Chart */
+        .chart-container {
+            height: 200px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .chart {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 3;
+            filter: drop-shadow(0 0 10px rgba(0, 201, 255, 0.5));
+        }
+
+        .chart-area {
+            fill: url(#gradient);
+            opacity: 0.2;
+        }
+
+        /* Controls Panel */
+        .controls-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .control-label {
+            font-size: 0.9rem;
             opacity: 0.8;
-            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .slider-control {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .slider-control::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: 2px solid var(--accent);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: white;
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
-            .animation-container {
-                height: 400px;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .controls {
+            .header {
                 flex-direction: column;
+                gap: 20px;
+                text-align: center;
             }
             
-            .time-slider-container {
-                min-width: 100%;
+            .metrics-grid {
+                grid-template-columns: 1fr;
             }
+            
+            .controls-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .time-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
     <div class="container">
-        <header>
-            <h1>Daylight Conversion Animation</h1>
-            <p class="subtitle">A professional simulation of the 24-hour daylight cycle with realistic transitions between sunrise, day, sunset, and night. Use the controls to adjust the time or watch the full animation.</p>
-        </header>
-
-        <div class="animation-container">
-            <div class="sky" id="sky"></div>
-            <div class="stars" id="stars"></div>
-            <div class="sun" id="sun"></div>
-            <div class="moon" id="moon"></div>
-            <div class="cloud cloud-1"></div>
-            <div class="cloud cloud-2"></div>
-            <div class="cloud cloud-3"></div>
-            <div class="horizon"></div>
-            
-            <div class="time-display">
-                <div id="time">06:00</div>
-                <div class="time-period" id="period">Sunrise</div>
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Daylight Simulation Pro</h1>
+                    <p>Professional-grade daylight analysis & visualization</p>
+                </div>
             </div>
-        </div>
-
-        <div class="controls">
-            <div class="time-slider-container">
-                <div class="time-slider-label">
-                    <span>Time of Day</span>
-                    <span id="time-label">06:00 AM - Sunrise</span>
+            <div class="header-controls">
+                <div class="date-display">
+                    <i class="far fa-calendar"></i>
+                    <span id="current-date">June 15, 2023</span>
                 </div>
-                <input type="range" min="0" max="23.5" step="0.5" value="6" class="time-slider" id="time-slider">
-                
-                <div class="preset-buttons">
-                    <button class="time-btn" data-time="5.5">Dawn</button>
-                    <button class="time-btn" data-time="8">Morning</button>
-                    <button class="time-btn active" data-time="12">Noon</button>
-                    <button class="time-btn" data-time="17">Afternoon</button>
-                    <button class="time-btn" data-time="19">Sunset</button>
-                    <button class="time-btn" data-time="21">Twilight</button>
-                    <button class="time-btn" data-time="0">Midnight</button>
-                </div>
-                
-                <button class="animate-btn" id="animate-btn">
-                    <i class="fas fa-play"></i> Play Full Day Animation
+                <button class="btn btn-secondary" id="export-btn">
+                    <i class="fas fa-download"></i> Export
                 </button>
             </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Visualization Panel -->
+            <div class="vis-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i class="fas fa-globe-americas"></i>
+                        Daylight Simulation
+                    </div>
+                    <div class="coordinates">
+                        <span><i class="fas fa-map-marker-alt"></i> 40.7128° N, 74.0060° W</span>
+                        <span><i class="fas fa-clock"></i> <span id="simulation-time">06:00 AM</span></span>
+                    </div>
+                </div>
+
+                <!-- Sky Visualization -->
+                <div class="sky-container">
+                    <div class="sky" id="sky"></div>
+                    <div class="atmosphere">
+                        <div class="sun-rays" id="sun-rays"></div>
+                    </div>
+                    <div class="stars" id="stars"></div>
+                    <div class="clouds" id="clouds"></div>
+                    <div class="sun" id="sun">
+                        <div class="sun-glow"></div>
+                    </div>
+                    <div class="moon" id="moon">
+                        <div class="moon-craters"></div>
+                    </div>
+                    <div class="horizon"></div>
+                </div>
+
+                <!-- Time Controls -->
+                <div class="time-controls">
+                    <div class="time-slider-container">
+                        <input type="range" min="0" max="23.5" step="0.1" value="6" class="time-slider" id="time-slider">
+                        <div class="time-slider-labels">
+                            <span>12 AM</span>
+                            <span>6 AM</span>
+                            <span>12 PM</span>
+                            <span>6 PM</span>
+                            <span>12 AM</span>
+                        </div>
+                    </div>
+                    <div class="time-presets">
+                        <button class="preset-btn" data-time="6">
+                            <i class="fas fa-sunrise"></i> Sunrise
+                        </button>
+                        <button class="preset-btn active" data-time="12">
+                            <i class="fas fa-sun"></i> Noon
+                        </button>
+                        <button class="preset-btn" data-time="18">
+                            <i class="fas fa-sunset"></i> Sunset
+                        </button>
+                        <button class="preset-btn" data-time="0">
+                            <i class="fas fa-moon"></i> Midnight
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Panel -->
+            <div class="data-panel">
+                <!-- Metrics Card -->
+                <div class="data-card">
+                    <div class="data-card-header">
+                        <div class="data-card-title">
+                            <i class="fas fa-chart-line"></i>
+                            Daylight Metrics
+                        </div>
+                        <div class="time-period" id="time-period">Morning</div>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-label">Solar Elevation</div>
+                            <div class="metric-value" id="solar-elevation">23.5<span class="metric-unit">°</span></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Illuminance</div>
+                            <div class="metric-value" id="illuminance">15,200<span class="metric-unit">lux</span></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Color Temperature</div>
+                            <div class="metric-value" id="color-temp">4,800<span class="metric-unit">K</span></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Shadow Length</div>
+                            <div class="metric-value" id="shadow-length">2.8<span class="metric-unit">m</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Card -->
+                <div class="data-card">
+                    <div class="data-card-header">
+                        <div class="data-card-title">
+                            <i class="fas fa-chart-area"></i>
+                            Daylight Analysis
+                        </div>
+                        <div class="chart-legend">
+                            <span style="color: var(--accent);">●</span> Illuminance
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <svg class="chart" id="daylight-chart" viewBox="0 0 300 150">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.6"/>
+                                    <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path class="chart-line" id="chart-line" d=""/>
+                            <path class="chart-area" id="chart-area" d=""/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Controls Card -->
+                <div class="data-card">
+                    <div class="data-card-header">
+                        <div class="data-card-title">
+                            <i class="fas fa-sliders-h"></i>
+                            Simulation Controls
+                        </div>
+                        <button class="btn btn-secondary" id="reset-btn">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                    <div class="controls-panel">
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Atmosphere Density</span>
+                                <span id="atmosphere-value">Medium</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="50" class="slider-control" id="atmosphere-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Cloud Coverage</span>
+                                <span id="cloud-value">30%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="30" class="slider-control" id="cloud-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Animation Speed</span>
+                                <span id="speed-value">1x</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="slider-control" id="speed-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Time Resolution</span>
+                                <span id="resolution-value">High</span>
+                            </div>
+                            <input type="range" min="1" max="5" value="3" class="slider-control" id="resolution-slider">
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="play-btn">
+                            <i class="fas fa-play"></i> Play Simulation
+                        </button>
+                        <button class="btn btn-secondary" id="capture-btn">
+                            <i class="fas fa-camera"></i> Capture
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="day-info">
-            <div class="info-card">
-                <h3>Sun Position</h3>
-                <p id="sun-position">Horizon</p>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="copyright">
+                © 2023 Daylight Simulation Pro v2.1.4
             </div>
-            <div class="info-card">
-                <h3>Light Intensity</h3>
-                <p id="light-intensity">Medium</p>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-question-circle"></i> Documentation</a>
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#"><i class="fas fa-share-alt"></i> Share</a>
             </div>
-            <div class="info-card">
-                <h3>Sky Color</h3>
-                <p id="sky-color">Orange</p>
-            </div>
-        </div>
-
-        <p class="instructions">
-            Drag the slider or click preset buttons to change the time. Click "Play Full Day Animation" to watch a complete 24-hour cycle with smooth transitions. The animation simulates realistic sky colors, sun/moon movement, and lighting conditions.
-        </p>
+        </footer>
     </div>
 
     <script>
-        // DOM Elements
-        const sky = document.getElementById('sky');
-        const sun = document.getElementById('sun');
-        const moon = document.getElementById('moon');
-        const stars = document.getElementById('stars');
-        const timeDisplay = document.getElementById('time');
-        const periodDisplay = document.getElementById('period');
-        const timeSlider = document.getElementById('time-slider');
-        const timeLabel = document.getElementById('time-label');
-        const presetButtons = document.querySelectorAll('.time-btn');
-        const animateBtn = document.getElementById('animate-btn');
-        const sunPositionDisplay = document.getElementById('sun-position');
-        const lightIntensityDisplay = document.getElementById('light-intensity');
-        const skyColorDisplay = document.getElementById('sky-color');
-        const clouds = document.querySelectorAll('.cloud');
+        // Professional Daylight Simulation System
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading screen
+            setTimeout(() => {
+                document.getElementById('loading').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading').style.display = 'none';
+                }, 500);
+            }, 1000);
 
-        // Time variables
-        let currentTime = 6; // Start at 6:00 (sunrise)
-        let isAnimating = false;
-        let animationInterval;
+            // System Configuration
+            const config = {
+                date: new Date(2023, 5, 15), // June 15, 2023
+                latitude: 40.7128,
+                longitude: -74.0060,
+                currentTime: 6.0, // 6:00 AM
+                isPlaying: false,
+                animationSpeed: 1,
+                atmosphereDensity: 50,
+                cloudCoverage: 30,
+                timeResolution: 3
+            };
 
-        // Sky colors for different times of day
-        const skyColors = {
-            night: { start: '#0c1445', end: '#1a237e' },
-            dawn: { start: '#1a237e', end: '#ff7e5f' },
-            sunrise: { start: '#ff7e5f', end: '#feb47b' },
-            morning: { start: '#87CEEB', end: '#E0F7FF' },
-            noon: { start: '#00b4ff', end: '#87CEEB' },
-            afternoon: { start: '#00b4ff', end: '#ffcc00' },
-            sunset: { start: '#ff7e5f', end: '#1a237e' },
-            twilight: { start: '#1a237e', end: '#0c1445' }
-        };
+            // DOM Elements
+            const sky = document.getElementById('sky');
+            const sun = document.getElementById('sun');
+            const moon = document.getElementById('moon');
+            const stars = document.getElementById('stars');
+            const sunRays = document.getElementById('sun-rays');
+            const cloudsContainer = document.getElementById('clouds');
+            const timeSlider = document.getElementById('time-slider');
+            const presetButtons = document.querySelectorAll('.preset-btn');
+            const simulationTime = document.getElementById('simulation-time');
+            const timePeriod = document.getElementById('time-period');
+            const currentDate = document.getElementById('current-date');
+            const solarElevation = document.getElementById('solar-elevation');
+            const illuminance = document.getElementById('illuminance');
+            const colorTemp = document.getElementById('color-temp');
+            const shadowLength = document.getElementById('shadow-length');
+            const playBtn = document.getElementById('play-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const exportBtn = document.getElementById('export-btn');
+            const captureBtn = document.getElementById('capture-btn');
+            const atmosphereSlider = document.getElementById('atmosphere-slider');
+            const cloudSlider = document.getElementById('cloud-slider');
+            const speedSlider = document.getElementById('speed-slider');
+            const resolutionSlider = document.getElementById('resolution-slider');
+            const atmosphereValue = document.getElementById('atmosphere-value');
+            const cloudValue = document.getElementById('cloud-value');
+            const speedValue = document.getElementById('speed-value');
+            const resolutionValue = document.getElementById('resolution-value');
+            const chartLine = document.getElementById('chart-line');
+            const chartArea = document.getElementById('chart-area');
 
-        // Initialize stars
-        function initStars() {
-            stars.innerHTML = '';
-            for (let i = 0; i < 150; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                star.style.width = `${Math.random() * 3 + 1}px`;
-                star.style.height = star.style.width;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 70}%`;
-                star.style.opacity = Math.random() * 0.8 + 0.2;
-                stars.appendChild(star);
-            }
-        }
+            // Initialize date display
+            const formatDate = (date) => {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return date.toLocaleDateString('en-US', options);
+            };
+            currentDate.textContent = formatDate(config.date);
 
-        // Update the display based on current time
-        function updateDisplay() {
-            // Format time display
-            const hour = Math.floor(currentTime);
-            const minute = currentTime % 1 === 0 ? '00' : '30';
-            const period = hour >= 12 ? 'PM' : 'AM';
-            const displayHour = hour % 12 || 12;
-            timeDisplay.textContent = `${displayHour.toString().padStart(2, '0')}:${minute}`;
-            
-            // Determine time period
-            let periodText, skyType;
-            let sunX, sunY, moonX, moonY;
-            let sunOpacity = 1, moonOpacity = 0, starsOpacity = 0;
-            let cloudOpacity = 0.7;
-            let sunPositionText, lightIntensityText, skyColorText;
-            
-            if (currentTime >= 0 && currentTime < 5) {
-                // Night
-                periodText = 'Night';
-                skyType = 'night';
-                sunX = -50;
-                sunY = 70;
-                moonX = 20 + (currentTime / 5) * 60;
-                moonY = 70 - (currentTime / 5) * 40;
-                moonOpacity = 1;
-                starsOpacity = 1;
-                sunPositionText = 'Below Horizon';
-                lightIntensityText = 'Very Low';
-                skyColorText = 'Dark Blue';
-            } else if (currentTime >= 5 && currentTime < 6) {
-                // Dawn
-                periodText = 'Dawn';
-                skyType = 'dawn';
-                sunX = -20 + ((currentTime - 5) / 1) * 30;
-                sunY = 70 - ((currentTime - 5) / 1) * 10;
-                moonX = 80;
-                moonY = 30;
-                moonOpacity = 0.5;
-                starsOpacity = 0.5 - ((currentTime - 5) / 1) * 0.5;
-                sunPositionText = 'Rising';
-                lightIntensityText = 'Low';
-                skyColorText = 'Deep Blue/Orange';
-            } else if (currentTime >= 6 && currentTime < 7) {
-                // Sunrise
-                periodText = 'Sunrise';
-                skyType = 'sunrise';
-                sunX = 10 + ((currentTime - 6) / 1) * 20;
-                sunY = 60 - ((currentTime - 6) / 1) * 20;
-                moonX = 90;
-                moonY = 20;
-                moonOpacity = 0.2;
-                starsOpacity = 0;
-                sunPositionText = 'Horizon';
-                lightIntensityText = 'Increasing';
-                skyColorText = 'Orange/Pink';
-            } else if (currentTime >= 7 && currentTime < 11) {
-                // Morning
-                periodText = 'Morning';
-                skyType = 'morning';
-                sunX = 30 + ((currentTime - 7) / 4) * 30;
-                sunY = 40 - ((currentTime - 7) / 4) * 15;
-                moonOpacity = 0;
-                starsOpacity = 0;
-                sunPositionText = 'Ascending';
-                lightIntensityText = 'Medium';
-                skyColorText = 'Light Blue';
-            } else if (currentTime >= 11 && currentTime < 13) {
-                // Noon
-                periodText = 'Noon';
-                skyType = 'noon';
-                sunX = 60 + ((currentTime - 11) / 2) * 10;
-                sunY = 25 - ((currentTime - 11) / 2) * 5;
-                moonOpacity = 0;
-                starsOpacity = 0;
-                sunPositionText = 'High';
-                lightIntensityText = 'High';
-                skyColorText = 'Bright Blue';
-            } else if (currentTime >= 13 && currentTime < 17) {
-                // Afternoon
-                periodText = 'Afternoon';
-                skyType = 'afternoon';
-                sunX = 70 + ((currentTime - 13) / 4) * 20;
-                sunY = 20 + ((currentTime - 13) / 4) * 15;
-                moonOpacity = 0;
-                starsOpacity = 0;
-                sunPositionText = 'Descending';
-                lightIntensityText = 'Medium';
-                skyColorText = 'Warm Blue';
-            } else if (currentTime >= 17 && currentTime < 19) {
-                // Sunset
-                periodText = 'Sunset';
-                skyType = 'sunset';
-                sunX = 90 + ((currentTime - 17) / 2) * 10;
-                sunY = 35 + ((currentTime - 17) / 2) * 25;
-                moonX = 10;
-                moonY = 70;
-                moonOpacity = 0.2;
-                starsOpacity = 0;
-                sunPositionText = 'Horizon';
-                lightIntensityText = 'Decreasing';
-                skyColorText = 'Orange/Red';
-            } else {
-                // Twilight / Night
-                periodText = 'Twilight';
-                skyType = 'twilight';
-                sunX = 110;
-                sunY = 60;
-                moonX = 20 + ((currentTime - 19) / 5) * 60;
-                moonY = 70 - ((currentTime - 19) / 5) * 40;
-                moonOpacity = 1;
-                starsOpacity = (currentTime - 19) / 5;
-                if (currentTime >= 21) {
-                    periodText = 'Night';
-                    skyType = 'night';
-                    starsOpacity = 1;
+            // Initialize stars
+            function initStars() {
+                stars.innerHTML = '';
+                const starCount = 200;
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    const size = Math.random() * 3 + 1;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 70}%`;
+                    star.style.opacity = Math.random() * 0.8 + 0.2;
+                    star.style.animationDelay = `${Math.random() * 4}s`;
+                    stars.appendChild(star);
                 }
-                sunPositionText = 'Below Horizon';
-                lightIntensityText = 'Low';
-                skyColorText = 'Deep Blue';
             }
-            
-            // Update period display
-            periodDisplay.textContent = periodText;
-            
-            // Update time label
-            timeLabel.textContent = `${displayHour.toString().padStart(2, '0')}:${minute} ${period} - ${periodText}`;
-            
-            // Update sky gradient
-            const colorSet = skyColors[skyType];
-            sky.style.background = `linear-gradient(to bottom, ${colorSet.start}, ${colorSet.end})`;
-            
-            // Update sun position and opacity
-            sun.style.left = `${sunX}%`;
-            sun.style.top = `${sunY}%`;
-            sun.style.opacity = sunOpacity;
-            
-            // Update moon position and opacity
-            moon.style.left = `${moonX}%`;
-            moon.style.top = `${moonY}%`;
-            moon.style.opacity = moonOpacity;
-            
-            // Update stars opacity
-            stars.style.opacity = starsOpacity;
-            
-            // Update cloud opacity based on time
-            if (currentTime >= 0 && currentTime < 5) {
-                cloudOpacity = 0.2;
-            } else if (currentTime >= 5 && currentTime < 6) {
-                cloudOpacity = 0.3 + ((currentTime - 5) / 1) * 0.4;
-            } else if (currentTime >= 19 && currentTime < 21) {
-                cloudOpacity = 0.7 - ((currentTime - 19) / 2) * 0.5;
-            } else if (currentTime >= 21) {
-                cloudOpacity = 0.2;
+
+            // Initialize clouds
+            function initClouds() {
+                cloudsContainer.innerHTML = '';
+                const cloudCount = Math.floor(config.cloudCoverage / 10);
+                
+                for (let i = 0; i < cloudCount; i++) {
+                    const cloud = document.createElement('div');
+                    cloud.className = 'cloud';
+                    const width = Math.random() * 150 + 80;
+                    const height = width * 0.4;
+                    cloud.style.width = `${width}px`;
+                    cloud.style.height = `${height}px`;
+                    cloud.style.left = `${Math.random() * 100}%`;
+                    cloud.style.top = `${Math.random() * 70 + 10}%`;
+                    cloud.style.opacity = Math.random() * 0.4 + 0.4;
+                    cloud.style.animationDelay = `${Math.random() * 10}s`;
+                    
+                    // Create cloud shape with pseudo-elements
+                    const cloudShape = document.createElement('div');
+                    cloudShape.style.position = 'absolute';
+                    cloudShape.style.width = '100%';
+                    cloudShape.style.height = '100%';
+                    cloudShape.style.background = 'inherit';
+                    cloudShape.style.borderRadius = '50%';
+                    cloudShape.style.filter = 'blur(5px)';
+                    cloud.appendChild(cloudShape);
+                    
+                    cloudsContainer.appendChild(cloud);
+                }
             }
-            
-            clouds.forEach(cloud => {
-                cloud.style.opacity = cloudOpacity;
+
+            // Calculate solar position
+            function calculateSolarPosition(hour) {
+                // Simplified solar position calculation
+                const hourAngle = (hour - 12) * 15; // Degrees
+                const solarElevation = Math.max(0, 90 - Math.abs(hourAngle));
+                
+                // Convert to sky coordinates
+                const sunX = 50 + (hourAngle / 180) * 100; // 0-100% range
+                const sunY = 100 - (solarElevation / 90) * 60; // Higher elevation = lower Y
+                
+                return { x: Math.max(-50, Math.min(150, sunX)), y: Math.max(40, Math.min(100, sunY)) };
+            }
+
+            // Calculate lunar position (opposite of sun with offset)
+            function calculateLunarPosition(hour) {
+                const lunarHour = (hour + 12) % 24;
+                const { x, y } = calculateSolarPosition(lunarHour);
+                return { x: x, y: y };
+            }
+
+            // Get sky color based on time
+            function getSkyColor(hour) {
+                const normalizedHour = hour % 24;
+                
+                if (normalizedHour >= 5 && normalizedHour < 6) {
+                    // Dawn
+                    return 'linear-gradient(to bottom, #1a237e 0%, #3949ab 30%, #ff7e5f 70%, #feb47b 100%)';
+                } else if (normalizedHour >= 6 && normalizedHour < 7) {
+                    // Sunrise
+                    return 'linear-gradient(to bottom, #ff7e5f 0%, #feb47b 30%, #87ceeb 70%, #e0f7ff 100%)';
+                } else if (normalizedHour >= 7 && normalizedHour < 17) {
+                    // Day
+                    const intensity = Math.min(1, (normalizedHour - 7) / 2);
+                    return `linear-gradient(to bottom, 
+                        #00b4ff 0%, 
+                        rgba(135, 206, 235, ${0.8 + intensity * 0.2}) 30%, 
+                        rgba(224, 247, 255, ${0.9 + intensity * 0.1}) 100%)`;
+                } else if (normalizedHour >= 17 && normalizedHour < 19) {
+                    // Sunset
+                    const sunsetProgress = (normalizedHour - 17) / 2;
+                    return `linear-gradient(to bottom, 
+                        #ff7e5f ${sunsetProgress * 50}%, 
+                        #feb47b ${30 + sunsetProgress * 20}%, 
+                        #1a237e ${70 + sunsetProgress * 30}%)`;
+                } else {
+                    // Night
+                    return 'linear-gradient(to bottom, #0c1445 0%, #1a237e 50%, #3949ab 100%)';
+                }
+            }
+
+            // Update metrics based on time
+            function updateMetrics(hour) {
+                const normalizedHour = hour % 24;
+                const solarPos = calculateSolarPosition(normalizedHour);
+                const elevation = Math.round(solarPos.y / 100 * 90);
+                
+                // Update solar elevation
+                solarElevation.innerHTML = `${elevation}<span class="metric-unit">°</span>`;
+                
+                // Update illuminance (lux)
+                let lux;
+                if (normalizedHour >= 6 && normalizedHour < 18) {
+                    const peakLux = 100000;
+                    const hourFromNoon = Math.abs(normalizedHour - 12);
+                    lux = Math.round(peakLux * Math.cos((hourFromNoon * Math.PI) / 12));
+                } else {
+                    lux = Math.round(100 * Math.random());
+                }
+                illuminance.innerHTML = `${lux.toLocaleString()}<span class="metric-unit">lux</span>`;
+                
+                // Update color temperature (Kelvin)
+                let temp;
+                if (normalizedHour >= 6 && normalizedHour < 8) {
+                    temp = 3000 + (normalizedHour - 6) * 900; // 3000K to 4800K
+                } else if (normalizedHour >= 8 && normalizedHour < 16) {
+                    temp = 4800 + (normalizedHour - 8) * 150; // 4800K to 6000K
+                } else if (normalizedHour >= 16 && normalizedHour < 18) {
+                    temp = 6000 - (normalizedHour - 16) * 1500; // 6000K to 3000K
+                } else {
+                    temp = 2000;
+                }
+                colorTemp.innerHTML = `${Math.round(temp).toLocaleString()}<span class="metric-unit">K</span>`;
+                
+                // Update shadow length
+                const shadow = elevation > 0 ? (1 / Math.tan(elevation * Math.PI / 180)).toFixed(1) : '∞';
+                shadowLength.innerHTML = `${shadow}<span class="metric-unit">m</span>`;
+                
+                // Update time period
+                let period;
+                if (normalizedHour >= 5 && normalizedHour < 7) period = 'Dawn';
+                else if (normalizedHour >= 7 && normalizedHour < 12) period = 'Morning';
+                else if (normalizedHour >= 12 && normalizedHour < 13) period = 'Noon';
+                else if (normalizedHour >= 13 && normalizedHour < 17) period = 'Afternoon';
+                else if (normalizedHour >= 17 && normalizedHour < 19) period = 'Sunset';
+                else if (normalizedHour >= 19 && normalizedHour < 21) period = 'Twilight';
+                else period = 'Night';
+                timePeriod.textContent = period;
+            }
+
+            // Update chart
+            function updateChart() {
+                const points = [];
+                const hourStep = 0.5;
+                
+                for (let h = 0; h <= 24; h += hourStep) {
+                    const solarPos = calculateSolarPosition(h);
+                    const normalizedY = 100 - solarPos.y;
+                    points.push({
+                        x: (h / 24) * 300,
+                        y: Math.max(10, Math.min(140, normalizedY))
+                    });
+                }
+                
+                // Create path for line
+                let linePath = `M ${points[0].x} ${points[0].y}`;
+                for (let i = 1; i < points.length; i++) {
+                    linePath += ` L ${points[i].x} ${points[i].y}`;
+                }
+                chartLine.setAttribute('d', linePath);
+                
+                // Create path for area
+                let areaPath = `M ${points[0].x} 150 L ${points[0].x} ${points[0].y}`;
+                for (let i = 1; i < points.length; i++) {
+                    areaPath += ` L ${points[i].x} ${points[i].y}`;
+                }
+                areaPath += ` L ${points[points.length - 1].x} 150 Z`;
+                chartArea.setAttribute('d', areaPath);
+            }
+
+            // Update simulation
+            function updateSimulation() {
+                const hour = config.currentTime;
+                
+                // Update time display
+                const displayHour = Math.floor(hour) % 12 || 12;
+                const minute = hour % 1 === 0 ? '00' : '30';
+                const ampm = hour % 24 >= 12 ? 'PM' : 'AM';
+                simulationTime.textContent = `${displayHour}:${minute} ${ampm}`;
+                
+                // Update sky
+                sky.style.background = getSkyColor(hour);
+                
+                // Update sun position
+                const sunPos = calculateSolarPosition(hour);
+                sun.style.left = `${sunPos.x}%`;
+                sun.style.top = `${sunPos.y}%`;
+                
+                // Update moon position
+                const moonPos = calculateLunarPosition(hour);
+                moon.style.left = `${moonPos.x}%`;
+                moon.style.top = `${moonPos.y}%`;
+                
+                // Update celestial body visibility
+                const normalizedHour = hour % 24;
+                if (normalizedHour >= 6 && normalizedHour < 18) {
+                    // Daytime
+                    sun.style.opacity = 1;
+                    moon.style.opacity = 0;
+                    stars.style.opacity = 0;
+                    
+                    // Sun rays intensity
+                    const rayIntensity = Math.max(0, 1 - Math.abs(normalizedHour - 12) / 6);
+                    sunRays.style.opacity = rayIntensity * 0.3;
+                } else {
+                    // Nighttime
+                    sun.style.opacity = 0;
+                    moon.style.opacity = 1;
+                    stars.style.opacity = 1;
+                    sunRays.style.opacity = 0;
+                    
+                    // Moon phase effect
+                    const moonPhase = (normalizedHour / 24) * 2 * Math.PI;
+                    const moonBrightness = 0.5 + 0.5 * Math.sin(moonPhase);
+                    moon.style.opacity = moonBrightness;
+                }
+                
+                // Update metrics
+                updateMetrics(hour);
+                
+                // Update slider
+                timeSlider.value = hour;
+                
+                // Update active preset
+                presetButtons.forEach(btn => {
+                    const btnTime = parseFloat(btn.dataset.time);
+                    if (Math.abs(hour - btnTime) < 0.5) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            // Initialize
+            initStars();
+            initClouds();
+            updateChart();
+            updateSimulation();
+
+            // Time slider event
+            timeSlider.addEventListener('input', function() {
+                config.currentTime = parseFloat(this.value);
+                updateSimulation();
             });
-            
-            // Update info cards
-            sunPositionDisplay.textContent = sunPositionText;
-            lightIntensityDisplay.textContent = lightIntensityText;
-            skyColorDisplay.textContent = skyColorText;
-            
-            // Update slider
-            timeSlider.value = currentTime;
-        }
 
-        // Animate a full day cycle
-        function animateDay() {
-            if (isAnimating) return;
-            
-            isAnimating = true;
-            animateBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Animation';
-            animateBtn.style.background = 'linear-gradient(90deg, #FF4500, #FF8C00)';
-            
-            let startTime = currentTime;
-            const duration = 60000; // 60 seconds for a full day
-            
-            const startTimestamp = Date.now();
-            
-            animationInterval = setInterval(() => {
-                const elapsed = Date.now() - startTimestamp;
-                const progress = elapsed / duration;
-                
-                currentTime = (startTime + progress * 24) % 24;
-                updateDisplay();
-                
-                if (progress >= 1) {
-                    stopAnimation();
-                }
-            }, 50);
-        }
-
-        // Stop the animation
-        function stopAnimation() {
-            clearInterval(animationInterval);
-            isAnimating = false;
-            animateBtn.innerHTML = '<i class="fas fa-play"></i> Play Full Day Animation';
-            animateBtn.style.background = 'linear-gradient(90deg, #FF8C00, #FFD700)';
-        }
-
-        // Set time to a specific value
-        function setTime(time) {
-            if (isAnimating) stopAnimation();
-            currentTime = parseFloat(time);
-            updateDisplay();
-            
-            // Update active button
+            // Preset button events
             presetButtons.forEach(btn => {
-                if (parseFloat(btn.dataset.time) === currentTime) {
-                    btn.classList.add('active');
+                btn.addEventListener('click', function() {
+                    config.currentTime = parseFloat(this.dataset.time);
+                    updateSimulation();
+                });
+            });
+
+            // Play/pause simulation
+            let animationInterval;
+            playBtn.addEventListener('click', function() {
+                if (config.isPlaying) {
+                    // Pause
+                    config.isPlaying = false;
+                    clearInterval(animationInterval);
+                    playBtn.innerHTML = '<i class="fas fa-play"></i> Play Simulation';
+                    playBtn.style.background = 'linear-gradient(135deg, var(--accent), var(--secondary))';
                 } else {
-                    btn.classList.remove('active');
+                    // Play
+                    config.isPlaying = true;
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Simulation';
+                    playBtn.style.background = 'linear-gradient(135deg, #ff4757, #ff3838)';
+                    
+                    const speed = Math.pow(2, config.animationSpeed - 1);
+                    animationInterval = setInterval(() => {
+                        config.currentTime = (config.currentTime + 0.1) % 24;
+                        updateSimulation();
+                    }, 100 / speed);
                 }
             });
-        }
 
-        // Event Listeners
-        timeSlider.addEventListener('input', function() {
-            setTime(this.value);
-        });
-
-        presetButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                setTime(this.dataset.time);
-            });
-        });
-
-        animateBtn.addEventListener('click', function() {
-            if (isAnimating) {
-                stopAnimation();
-            } else {
-                animateDay();
-            }
-        });
-
-        // Keyboard controls
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight') {
-                setTime((currentTime + 0.5) % 24);
-            } else if (e.key === 'ArrowLeft') {
-                setTime((currentTime - 0.5 + 24) % 24);
-            } else if (e.key === ' ') {
-                if (isAnimating) {
-                    stopAnimation();
-                } else {
-                    animateDay();
+            // Reset simulation
+            resetBtn.addEventListener('click', function() {
+                config.currentTime = 6.0;
+                updateSimulation();
+                
+                if (config.isPlaying) {
+                    config.isPlaying = false;
+                    clearInterval(animationInterval);
+                    playBtn.innerHTML = '<i class="fas fa-play"></i> Play Simulation';
+                    playBtn.style.background = 'linear-gradient(135deg, var(--accent), var(--secondary))';
                 }
-            } else if (e.key >= '1' && e.key <= '7') {
-                const times = [5.5, 8, 12, 17, 19, 21, 0];
-                setTime(times[parseInt(e.key) - 1]);
-            }
-        });
+            });
 
-        // Initialize
-        initStars();
-        updateDisplay();
-        
-        // Add some random twinkling to stars
-        setInterval(() => {
-            if (stars.style.opacity > 0) {
-                const allStars = document.querySelectorAll('.star');
-                const randomStar = allStars[Math.floor(Math.random() * allStars.length)];
-                const originalOpacity = randomStar.style.opacity;
-                randomStar.style.opacity = Math.min(1, parseFloat(originalOpacity) + 0.3);
+            // Control sliders
+            atmosphereSlider.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                config.atmosphereDensity = value;
+                
+                if (value < 20) atmosphereValue.textContent = 'Very Low';
+                else if (value < 40) atmosphereValue.textContent = 'Low';
+                else if (value < 60) atmosphereValue.textContent = 'Medium';
+                else if (value < 80) atmosphereValue.textContent = 'High';
+                else atmosphereValue.textContent = 'Very High';
+                
+                // Update atmospheric effects
+                const opacity = value / 100;
+                sunRays.style.opacity = opacity * 0.5;
+            });
+
+            cloudSlider.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                config.cloudCoverage = value;
+                cloudValue.textContent = `${value}%`;
+                initClouds();
+            });
+
+            speedSlider.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                config.animationSpeed = value;
+                speedValue.textContent = `${Math.pow(2, value - 1)}x`;
+                
+                if (config.isPlaying) {
+                    clearInterval(animationInterval);
+                    const speed = Math.pow(2, value - 1);
+                    animationInterval = setInterval(() => {
+                        config.currentTime = (config.currentTime + 0.1) % 24;
+                        updateSimulation();
+                    }, 100 / speed);
+                }
+            });
+
+            resolutionSlider.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                config.timeResolution = value;
+                
+                const resolutions = ['Very Low', 'Low', 'Medium', 'High', 'Very High'];
+                resolutionValue.textContent = resolutions[value - 1];
+            });
+
+            // Export and capture buttons
+            exportBtn.addEventListener('click', function() {
+                // Simulate export functionality
+                exportBtn.innerHTML = '<i class="fas fa-check"></i> Exported';
+                setTimeout(() => {
+                    exportBtn.innerHTML = '<i class="fas fa-download"></i> Export';
+                }, 2000);
+                
+                // In a real app, this would trigger a file download
+                console.log('Exporting simulation data...');
+            });
+
+            captureBtn.addEventListener('click', function() {
+                // Simulate capture functionality
+                const originalText = captureBtn.innerHTML;
+                captureBtn.innerHTML = '<i class="fas fa-check"></i> Captured';
+                
+                // Flash effect
+                document.body.style.backgroundColor = 'white';
+                setTimeout(() => {
+                    document.body.style.backgroundColor = '';
+                }, 100);
                 
                 setTimeout(() => {
-                    randomStar.style.opacity = originalOpacity;
-                }, 300);
-            }
-        }, 800);
+                    captureBtn.innerHTML = originalText;
+                }, 2000);
+                
+                // In a real app, this would capture the visualization
+                console.log('Capture triggered');
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Spacebar to play/pause
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    playBtn.click();
+                }
+                // Arrow keys to navigate time
+                else if (e.code === 'ArrowRight') {
+                    config.currentTime = (config.currentTime + 0.5) % 24;
+                    updateSimulation();
+                }
+                else if (e.code === 'ArrowLeft') {
+                    config.currentTime = (config.currentTime - 0.5 + 24) % 24;
+                    updateSimulation();
+                }
+                // Number keys for presets
+                else if (e.code >= 'Digit1' && e.code <= 'Digit4') {
+                    const index = parseInt(e.code[5]) - 1;
+                    if (presetButtons[index]) {
+                        presetButtons[index].click();
+                    }
+                }
+            });
+
+            // Initialize tooltips
+            const elementsWithTooltip = document.querySelectorAll('[data-tooltip]');
+            elementsWithTooltip.forEach(el => {
+                el.addEventListener('mouseenter', function() {
+                    // Tooltip implementation would go here
+                });
+            });
+        });
     </script>
 </body>
 </html>
